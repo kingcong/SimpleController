@@ -39,8 +39,8 @@ public class LoginController extends HttpServlet {
 		/**
 		 * 2.获取请求中的用户名和密码
 		 */
-		String username = request.getParameter("username");
-		String password = request.getParameter("password");
+		String username = request.getParameter("username") == null ? "" : request.getParameter("username");
+		String password = request.getParameter("password") == null ? "" : request.getParameter("password");
 		
 		/**
 		 * 3.判断是否登录成功
