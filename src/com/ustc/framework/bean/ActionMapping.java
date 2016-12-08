@@ -1,6 +1,9 @@
 package com.ustc.framework.bean;
 
+import java.util.List;
 import java.util.Map;
+
+import com.ustc.framework.interceptor.Interceptor;
 
 /** 
 * @author 王聪 E-mail: 2441413514@qq.com
@@ -12,8 +15,22 @@ public class ActionMapping {
 	private String name;	// 请求路径名称
 	private String className;	// 处理action路径的全名
 	private String method;	// 处理方法
+	private List<InterceptorInfo> interceptors;	// 拦截器集合
 	private Map<String, Result> results;	// 结果视图集合
 	
+	/**
+	 * @return the interceptors
+	 */
+	public List<InterceptorInfo> getInterceptors() {
+		return interceptors;
+	}
+	/**
+	 * @param interceptors the interceptors to set
+	 */
+	public void setInterceptors(List<InterceptorInfo> interceptors) {
+		this.interceptors = interceptors;
+	}
+
 	/**
 	 * @return the name
 	 */

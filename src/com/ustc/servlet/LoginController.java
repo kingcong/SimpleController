@@ -3,6 +3,7 @@ package com.ustc.servlet;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,6 +15,9 @@ import com.ustc.bean.UserBean;
 import com.ustc.framework.bean.ActionMapping;
 import com.ustc.framework.bean.ActionMappingManager;
 import com.ustc.framework.bean.Result;
+import com.ustc.framework.interceptor.Action;
+import com.ustc.framework.interceptor.ActionProxy;
+import com.ustc.framework.interceptor.ActionProxyFactory;
 
 
 /**
@@ -48,16 +52,25 @@ public class LoginController extends HttpServlet {
 			ActionMapping actionMapping = actionMappingManager.getActionMapping(actionName);
 			String className = actionMapping.getClassName();
 			
+			System.out.println("Inte:"+actionMapping.getInterceptors());
+			
 			// 当前请求的处理方法  【method="login"】
-			String method = actionMapping.getMethod();
+//			String method = actionMapping.getMethod();
+			String method = "execute";
 			
 			// 3.反射：创建对象，然后调用方法，获取方法返回的标记
 			Class<?> clazz = Class.forName(className);
 			Object obj = clazz.newInstance();
 			Method m = clazz.getDeclaredMethod(method, HttpServletRequest.class,HttpServletResponse.class);
 			// 调用方法后返回标记
-			String returnFlag = (String)m.invoke(obj, request,response);
+//			String returnFlag = (String)m.invoke(obj, request,response);
+//			ActionProxy handler = new ActionProxy(obj, null, method, method, false);
+			ActionProxy handler = ActionProxyFactory.createActionProxy(obj, actionMapping.getInterceptors(), actionName, method, false);
+			Action proxyObj = (Action)Proxy.newProxyInstance(obj.getClass().getClassLoader(), obj.getClass().getInterfaces(), handler);
+//			String returnFlag = (String)m.invoke(proxyObj, HttpServletRequest.class,HttpServletResponse.class);
+			String returnFlag = (String)proxyObj.execute(request, response);
 			
+			System.out.println("returnFlag:"+returnFlag);
 			// 4.用该标记，读取配置文件得到标记对应的页面，跳转类型
 			Result result = actionMapping.getResults().get(returnFlag);
 			String type = result.getType();	 // 类型

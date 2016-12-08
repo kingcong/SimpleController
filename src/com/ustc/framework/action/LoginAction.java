@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.ustc.bean.UserBean;
+import com.ustc.framework.interceptor.Action;
 import com.ustc.service.UserService;
 
 
@@ -16,14 +17,15 @@ import com.ustc.service.UserService;
 * @version 创建时间：2016年12月1日 上午12:20:39 
 * 
 */
-public class LoginAction {
+public class LoginAction implements Action{
 
 	/**
 	 * @see LoginAction#doPost(HttpServletRequest request, HttpServletResponse response)
 	 * @return 根据返回的uri对象即是查找结果集的name
 	 */
-	public Object login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public Object execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		System.out.println("login方法被执行了。。。");
 		
 		Object uri = null;
 
