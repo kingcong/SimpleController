@@ -1,4 +1,4 @@
-#JavaEE第三次
+#JavaEE第三次 ssss
 #JavaEE第二次作业(求给个star)
 ##1.问题要求
 1)将E1中编写的Servlet子类LoginController，在web.xml 中的配置修改为:可以拦截“*.scaction”类型的请求
