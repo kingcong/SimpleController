@@ -7,3 +7,4 @@ package com.ustc.framework.interceptor;
 public interface Interceptor {
 	public Object intercept(ActionInvocation invocation) throws Throwable;
 }
+ 

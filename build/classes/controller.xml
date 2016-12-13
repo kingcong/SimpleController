@@ -9,6 +9,13 @@
 			<method>log</method>
 		</class>
 	</interceptor>
+	<interceptor>
+		<name>paramWriter</name>
+		<class>
+			<name>com.ustc.util.ParamInterceptor</name>
+			<method>log</method>
+		</class>
+	</interceptor>
 	<!-- Other interceptors  -->
 	
 	<!-- Action部分  -->
@@ -20,6 +27,9 @@
 		</class>
 		<interceptor-ref>
 			<name>logWriter</name>
+		</interceptor-ref>
+		<interceptor-ref>
+			<name>paramWriter</name>
 		</interceptor-ref>
 		<result>
 			<name>success</name>
