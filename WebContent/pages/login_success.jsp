@@ -8,5 +8,6 @@
 </head>
 <body>
 	登录成功
+	<form action="" name="" method="post"></form>
 </body>
 </html>

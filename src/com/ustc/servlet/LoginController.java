@@ -1,6 +1,8 @@
 package com.ustc.servlet;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -11,6 +13,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.dom4j.Document;
+import org.dom4j.io.SAXReader;
+
+import com.sun.org.apache.xalan.internal.xsltc.cmdline.Transform;
 import com.ustc.bean.UserBean;
 import com.ustc.framework.bean.ActionMapping;
 import com.ustc.framework.bean.ActionMappingManager;
@@ -18,6 +24,7 @@ import com.ustc.framework.bean.Result;
 import com.ustc.framework.interceptor.Action;
 import com.ustc.framework.interceptor.ActionProxy;
 import com.ustc.framework.interceptor.ActionProxyFactory;
+import com.ustc.util.TransformUtil;
 
 
 /**
@@ -75,12 +82,46 @@ public class LoginController extends HttpServlet {
 			Result result = actionMapping.getResults().get(returnFlag);
 			String type = result.getType();	 // 类型
 			String page = result.getValue();	// 页面
+					
+			
+			String t=Thread.currentThread().getContextClassLoader().getResource("").getPath();
+			int num=t.indexOf(".metadata");
+			String path=t.substring(1,num)+"SimpleController/WebContent/";
+			
+			// 1. 得到解析器
+			SAXReader reader = new SAXReader();
+			// 得到src/mystruts.xml  文件流
+			InputStream inStream = this.getClass().getResourceAsStream("/controller.xml");
+			// 2. 加载文件
+			Document doc = reader.read(inStream);	
 			
 			// 跳转页面
 			if ("redirect".equals(type)) {	// 重定向类型
-				response.sendRedirect(request.getContextPath()+"/"+page);
+				if (page.contains(".xml")) {
+//					File file = new File(path+page);
+//					File f = new File(getServletContext().getRealPath("alerts/rtp_bcklg_mail.html"));
+					File file = new File(request.getServletContext().getRealPath(page));
+					Document document = new SAXReader().read(file);
+					String xslPath = request.getServletContext().getRealPath("pages/success_view.xsl");
+					TransformUtil tUtil = new TransformUtil();
+					String htmlStr = tUtil.transformXmlToHtml(document, xslPath);
+					System.out.println("str="+htmlStr);
+					response.getWriter().write(htmlStr);	
+				} else {
+					response.sendRedirect(request.getContextPath()+"/"+page);
+				}
 			} else {	// 转发类型
-				request.getRequestDispatcher(page).forward(request, response);
+				if (page.contains(".xml")) {
+					File file = new File(request.getServletContext().getRealPath(page));
+					Document document = new SAXReader().read(file);
+					String xslPath = request.getServletContext().getRealPath("pages/success_view.xsl");
+					TransformUtil tUtil = new TransformUtil();
+					String htmlStr = tUtil.transformXmlToHtml(document, xslPath);
+					System.out.println("str="+htmlStr);
+					response.getWriter().write(htmlStr);
+				} else {
+					request.getRequestDispatcher(page).forward(request, response);
+				}
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -88,6 +129,18 @@ public class LoginController extends HttpServlet {
 		} 
 		
 	}
+	
+	public String getCurrentPath(){  
+	       //取得根目录路径  
+	       String rootPath=getClass().getResource("/").getFile().toString();  
+	       //当前目录路径  
+	       String currentPath1=getClass().getResource(".").getFile().toString();  
+	       String currentPath2=getClass().getResource("").getFile().toString();  
+	       //当前目录的上级目录路径  
+	       String parentPath=getClass().getResource("../").getFile().toString();  
+	          
+	       return rootPath;         
+	   }
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)

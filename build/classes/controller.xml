@@ -34,7 +34,7 @@
 		<result>
 			<name>success</name>
 			<type>forward</type>
-			<value>pages/login_success.jsp</value>
+			<value>pages/success_view.xml</value>
 		</result>
 		<result>
 			<name>fail</name>
