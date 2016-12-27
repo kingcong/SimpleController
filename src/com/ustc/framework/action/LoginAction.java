@@ -33,19 +33,19 @@ public class LoginAction implements Action{
 		String name = request.getParameter("name");
 		String password = request.getParameter("password");
 		UserBean user = new UserBean();
-		user.setName(name);
-		user.setPassword(password);
+//		user.setName(name);
+//		user.setPassword(password);
+		boolean result = user.login(name, password);
 
-		// 2. 调用Service
-		UserService userService = new UserService();
-		UserBean userInfo = userService.login(user);
 		// 3. 跳转
-		if (userInfo == null) {
+		if (!result) {
 			// 登陆失败
 			uri = "fail";  
 		} else {
+			user.setName(name);
+			user.setPassword(password);
 			// 登陆成功
-			request.getSession().setAttribute("userInfo", userInfo);
+			request.getSession().setAttribute("userInfo", user);
 			// 返回uri
 			uri = "success"; 
 		}

@@ -2,6 +2,7 @@ package com.ustc.service;
 
 import com.ustc.bean.UserBean;
 import com.ustc.dao.UserDao;
+import com.ustc.impl.UserDaoImpl;
 
 
 /** 
@@ -10,15 +11,18 @@ import com.ustc.dao.UserDao;
 * 
 */
 public class UserService {
-	private UserDao ud = new UserDao();
+	private UserBean ud = new UserBean();
 
 	// 模拟登陆
 	public UserBean login(UserBean user){
-		return ud.login(user);
+//		return ud.login(user);
+//		return ud.;
+		return null;
 	}
 	
 	// 模拟注册
 	public void register(UserBean user) {
-		ud.register(user);
+//		ud.register(user);
+		
 	}
 }
