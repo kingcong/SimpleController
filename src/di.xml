@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dependency-mappings>
+	<bean>
+		<name>user</name>
+		<class>water.model.UserBean</class>
+		<property>
+			<name>userName</name>
+		</property>
+		<property>
+			<name>userPass</name>
+		</property>
+		<property>
+			<name>userID</name>
+		</property>
+	</bean>
+	<bean>
+		<name>loginAction</name>
+		<class>water.action.LoginAction</class>
+		<property>
+			<name>userBean</name>
+			<ref-class>user</ref-class>
+		</property>
+	</bean>
+	<!-- other beans -->
+</dependency-mappings>

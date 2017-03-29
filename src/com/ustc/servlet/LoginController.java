@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,10 +21,12 @@ import com.sun.org.apache.xalan.internal.xsltc.cmdline.Transform;
 import com.ustc.bean.UserBean;
 import com.ustc.framework.bean.ActionMapping;
 import com.ustc.framework.bean.ActionMappingManager;
+import com.ustc.framework.bean.DependencyBean;
 import com.ustc.framework.bean.Result;
 import com.ustc.framework.interceptor.Action;
 import com.ustc.framework.interceptor.ActionProxy;
 import com.ustc.framework.interceptor.ActionProxyFactory;
+import com.ustc.framework.spring.DependencyMappingManager;
 import com.ustc.util.TransformUtil;
 
 
@@ -58,6 +61,15 @@ public class LoginController extends HttpServlet {
 			// 2.根据路径名称，读取配置文件，得到类的全名 【com.ustc.servlet.LoginController】
 			ActionMapping actionMapping = actionMappingManager.getActionMapping(actionName);
 			String className = actionMapping.getClassName();
+			
+			if (className == null || className.equals("")) {
+				response.getWriter().write("无法识别该请求");
+			}
+			
+			Map<String,DependencyBean> aMap= DependencyMappingManager.getDependency();
+			if (aMap != null) {
+				// 依赖注入
+			}
 			
 			System.out.println("Inte:"+actionMapping.getInterceptors());
 			

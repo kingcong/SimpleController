@@ -79,5 +79,7 @@ public class ActionMapping {
 	public void setResults(Map<String, Result> results) {
 		this.results = results;
 	}
+	
+
 
 }
